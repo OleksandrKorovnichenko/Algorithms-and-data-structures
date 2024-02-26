@@ -127,17 +127,3 @@ class User(UserBasic):
         """
         return (self.surname, self.name, self.email, self.phone) \
             >= (other.surname, other.name, other.email, other.phone)
-
-
-# Creating a list of users with different input data
-users = [
-    UserBasic("Іван", "Іванов", email="ivan@yahoo.com", phone=38097123435455),
-    UserBasic("Петро", "Петров", email="petro@gmail.com", phone=380971234561),
-    UserBasic("Марія", "Сидорова", email="maria@ukr.net", phone=380971234786),
-    UserBasic("Тарас", "Тарасов", email="", phone=380971236765),
-    UserBasic("Олександ", "Олександров", email="sasha@example.com", phone=380971233343),
-]
-
-# Calling the method for each user
-for user in users:
-    UserBasic.send_confirmation_code(user)
