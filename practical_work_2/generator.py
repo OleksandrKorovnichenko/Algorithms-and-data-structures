@@ -1,5 +1,5 @@
 from faker import Faker
-import names
+from names import get_last_name, get_first_name
 from phone_gen import PhoneNumber
 from practical_work_1.user_dataclass import User
 
@@ -11,8 +11,8 @@ class Generator:
         """A method of automatically creating an instance of the User class
         with random or selected from a certain list values of each property of the class
         """
-        name = names.get_first_name()
-        surname = names.get_last_name()
+        name = get_first_name()
+        surname = get_last_name()
         phone = int(PhoneNumber("Ukraine").get_mobile()[1:])
         email = Faker().email()
 
