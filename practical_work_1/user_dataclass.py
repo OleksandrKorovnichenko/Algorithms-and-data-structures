@@ -1,18 +1,19 @@
-"""Account registration"""
+from dataclasses import dataclass, field
+from abstract_object import AbstractObject
 
 
-class User:
-    # Defining a User class to store user information.
-    def __init__(self, name, surname, email=None, phone=None):
-        # Initializing user attributes: name, surname, email, and phone.
-        self.name = name
-        self.surname = surname
-        self.email = email
-        self.phone = phone
+@dataclass(order=True)
+class User(AbstractObject):
+    name: str
+    surname: str
+    email: str
+    phone: int
+    __phone: int = field(init=False)
 
+    def get_info(self) -> str:
+        """A method for extracting concise information"""
+        return f"User({self.name}, {self.surname}, {self.email}, {self.phone})"
 
-class ConfirmationSystem:
-    # ConfirmationSystem class to handle confirmation code sending logic.
     @staticmethod
     def get_service(email):
         # Static method to extract service provider from email address.
@@ -45,6 +46,7 @@ class ConfirmationSystem:
     @staticmethod
     def format_phone(phone):
         # Static method to format phone number for privacy.
+        phone = str(phone)
         if phone:
             return f"380{phone[-7:-4]}***{phone[-4:]}"
         else:
@@ -71,16 +73,24 @@ class ConfirmationSystem:
                 f"{user_info.name} {user_info.surname}, дякуєм за реєстрацію. "
                 f"Код підтвердження відправлено в смс по номеру {formatted_phone}")
 
+    @property
+    def phone(self):
+        """Getter for the phone attribute
+        """
+        return self.__phone
 
-# Creating a list of users with different input data
-users = [
-    User("Іван", "Іванов", email="ivan@yahoo.com", phone="38097123435455"),
-    User("Петро", "Петров", email="petro@gmail.com", phone="380971234561"),
-    User("Марія", "Сидорова", email="maria@ukr.net", phone="380971234786"),
-    User("Тарас", "Тарасов", email="", phone="380971236765"),
-    User("Олександ", "Олександров", email="sasha@example.com", phone="380971233343"),
-]
+    @phone.setter
+    def phone(self, value):
+        """Setter for the phone attribute with no false values
+        """
+        if value is not int:
+            raise TypeError
+        elif len(value) > 12:
+            raise ValueError
+        else:
+            self.__mark = value
 
-# Calling the method for each user
-for user in users:
-    ConfirmationSystem.send_confirmation_code(user)
+    def __repr__(self):
+        """The method of presenting an object in PR2 when displayed as a string with attribute values
+        """
+        return self.get_info()
